@@ -4,14 +4,15 @@ on:
   push:
     branches:
       - develop
-    paths:
-      - '.github/workflows/dockerhub-release.yml'
-      - 'docker.vars*'
+      - da/arm64-image
+    # paths:
+    #   - '.github/workflows/dockerhub-release.yml'
+    #   - 'docker.vars*'
 
 jobs:
   docker_release:
     runs-on: ubuntu-20.04
-    timeout-minutes: 100
+    timeout-minutes: 400
 
     steps:
       - uses: actions/checkout@v2
@@ -44,6 +45,6 @@ jobs:
           context: .
           push: true
           tags: supabase/postgres:latest,supabase/postgres:${{ steps.settings.outputs.docker_version }}
-          platforms: linux/amd64
+          platforms: linux/arm64
           build-args: |
             "VERSION=${{steps.settings.outputs.postgres_version}}"
